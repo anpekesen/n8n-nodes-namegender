@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-namegender",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "n8n node for NameGender: gender from a name, email or username, with the probability, sample size and source behind each answer.",
   "license": "MIT",
   "homepage": "https://namegender.com/integrations",
