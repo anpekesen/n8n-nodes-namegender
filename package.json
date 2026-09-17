@@ -1,0 +1,55 @@
+{
+  "name": "n8n-nodes-namegender",
+  "version": "0.1.0",
+  "description": "n8n node for NameGender: gender from a name, email or username, with the probability, sample size and source behind each answer.",
+  "license": "MIT",
+  "homepage": "https://namegender.com/integrations",
+  "keywords": [
+    "n8n-community-node-package",
+    "gender",
+    "name",
+    "gender-detection",
+    "namegender"
+  ],
+  "author": {
+    "name": "NameGender",
+    "email": "info@namegender.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anpekesen/n8n-nodes-namegender.git"
+  },
+  "scripts": {
+    "build": "n8n-node build",
+    "build:watch": "tsc --watch",
+    "dev": "n8n-node dev",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "test": "node --test test/",
+    "release": "n8n-node release",
+    "prepublishOnly": "n8n-node prerelease"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "strict": true,
+    "credentials": [
+      "dist/credentials/NameGenderApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/NameGender/NameGender.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@n8n/node-cli": "0.48.4",
+    "eslint": "9.32.0",
+    "prettier": "3.6.2",
+    "release-it": "^19.0.4",
+    "typescript": "5.9.2"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}
