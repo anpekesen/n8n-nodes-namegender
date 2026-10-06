@@ -1,7 +1,7 @@
 import { NodeConnectionTypes, type INodeType, type INodeTypeDescription } from 'n8n-workflow';
 
 /*
- * One resource, one request per item. n8n already runs a node once for every
+ * Three resources (Gender, Name Check, Salutation), one request per item. n8n already runs a node once for every
  * incoming item, so a separate bulk operation would only add a second way of
  * doing the same thing.
  *
@@ -18,8 +18,7 @@ export class NameGender implements INodeType {
 		icon: { light: 'file:namegender.svg', dark: 'file:namegender.dark.svg' },
 		group: ['transform'],
 		version: 1,
-		subtitle:
-			'={{$parameter["operation"] === "salutation" ? "Salutation" : $parameter["operation"] === "nameCheck" ? "Name check" : "Gender from " + $parameter["operation"]}}',
+		subtitle: '={{$parameter["resource"] + ": " + $parameter["operation"]}}',
 		description:
 			'Get the gender associated with a name, email address or username, a ready salutation, or a check of whether a name looks real',
 		defaults: {
@@ -38,10 +37,25 @@ export class NameGender implements INodeType {
 		},
 		properties: [
 			{
+				displayName: 'Resource',
+				name: 'resource',
+				type: 'options',
+				noDataExpression: true,
+				options: [
+					{ name: 'Gender', value: 'gender' },
+					{ name: 'Name Check', value: 'nameCheck' },
+					{ name: 'Salutation', value: 'salutation' },
+				],
+				// Varsayılan Gender: kaynak alanı eklenmeden önce kurulmuş iş akışları
+				// bu alanı taşımıyor ve değişmeden çalışmaya devam etmeli.
+				default: 'gender',
+			},
+			{
 				displayName: 'Operation',
 				name: 'operation',
 				type: 'options',
 				noDataExpression: true,
+				displayOptions: { show: { resource: ['gender'] } },
 				options: [
 					{
 						name: 'Countries For Name',
@@ -72,16 +86,36 @@ export class NameGender implements INodeType {
 						description: 'Strip digits and separators, then look up the name',
 						routing: { request: { method: 'POST', url: '/gender/username' } },
 					},
+				],
+				default: 'name',
+			},
+			{
+				displayName: 'Operation',
+				name: 'operation',
+				type: 'options',
+				noDataExpression: true,
+				displayOptions: { show: { resource: ['nameCheck'] } },
+				options: [
 					{
-						name: 'Name Check',
+						name: 'Check',
 						value: 'nameCheck',
 						action: 'Check whether a name looks real',
 						description:
 							'Say whether a name typed into a form looks like a real person name, with the reasons. It never calls a name fake.',
 						routing: { request: { method: 'POST', url: '/name-check' } },
 					},
+				],
+				default: 'nameCheck',
+			},
+			{
+				displayName: 'Operation',
+				name: 'operation',
+				type: 'options',
+				noDataExpression: true,
+				displayOptions: { show: { resource: ['salutation'] } },
+				options: [
 					{
-						name: 'Salutation',
+						name: 'Get',
 						value: 'salutation',
 						action: 'Get a salutation for a name',
 						description:
@@ -89,7 +123,7 @@ export class NameGender implements INodeType {
 						routing: { request: { method: 'POST', url: '/salutation' } },
 					},
 				],
-				default: 'name',
+				default: 'salutation',
 			},
 			{
 				displayName: 'Name',

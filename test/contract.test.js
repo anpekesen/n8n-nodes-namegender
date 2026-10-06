@@ -26,7 +26,11 @@ test.before(async () => {
 
 const description = new NameGender().description;
 const base = description.requestDefaults.baseURL;
-const operation = description.properties.find((p) => p.name === 'operation');
+// Kaynak başına bir Operation alanı var (Gender, Name Check, Salutation);
+// sözleşme hepsinin seçeneklerine birlikte bakar.
+const operation = {
+	options: description.properties.filter((p) => p.name === 'operation').flatMap((p) => p.options),
+};
 
 const bodyFieldsFor = (op) =>
 	description.properties
@@ -69,4 +73,20 @@ test('credentials send a Bearer key and test against an uncharged endpoint', () 
 	assert.equal(credentials.authenticate.properties.headers.Authorization, '=Bearer {{$credentials.apiKey}}');
 	assert.equal(credentials.test.request.url, '/me');
 	assert.ok(spec.paths['/api/v1/me'], '/me is not documented');
+});
+
+test('every resource has an operation, and the default resource keeps old gender workflows working', () => {
+	const resource = description.properties.find((p) => p.name === 'resource');
+	const operations = description.properties.filter((p) => p.name === 'operation');
+
+	assert.equal(resource.default, 'gender');
+	for (const option of resource.options) {
+		assert.ok(
+			operations.some((p) => p.displayOptions.show.resource.includes(option.value)),
+			`${option.value} has no operation`,
+		);
+	}
+	const gender = operations.find((p) => p.displayOptions.show.resource.includes('gender'));
+	assert.deepEqual(gender.options.map((o) => o.value).sort(), ['countries', 'email', 'name', 'username']);
+	assert.equal(gender.default, 'name');
 });

@@ -18,6 +18,8 @@ If the names are personal data you do not want kept in your request history, tur
 
 ## Operations
 
+The node has three resources: **Gender** (the four lookups below), **Salutation** and **Name Check**. Workflows built before 0.4.0 keep working: Gender is the default resource.
+
 | Operation | Endpoint | Input |
 |---|---|---|
 | Gender From Name | `POST /api/v1/gender` | A first name or a full name |
