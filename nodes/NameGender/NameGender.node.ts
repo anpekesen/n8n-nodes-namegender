@@ -18,9 +18,10 @@ export class NameGender implements INodeType {
 		icon: { light: 'file:namegender.svg', dark: 'file:namegender.dark.svg' },
 		group: ['transform'],
 		version: 1,
-		subtitle: '={{$parameter["operation"] === "salutation" ? "Salutation" : "Gender from " + $parameter["operation"]}}',
+		subtitle:
+			'={{$parameter["operation"] === "salutation" ? "Salutation" : $parameter["operation"] === "nameCheck" ? "Name check" : "Gender from " + $parameter["operation"]}}',
 		description:
-			'Get the gender associated with a name, email address or username, or a ready salutation for a name',
+			'Get the gender associated with a name, email address or username, a ready salutation, or a check of whether a name looks real',
 		defaults: {
 			name: 'NameGender',
 		},
@@ -72,6 +73,14 @@ export class NameGender implements INodeType {
 						routing: { request: { method: 'POST', url: '/gender/username' } },
 					},
 					{
+						name: 'Name Check',
+						value: 'nameCheck',
+						action: 'Check whether a name looks real',
+						description:
+							'Say whether a name typed into a form looks like a real person name, with the reasons. It never calls a name fake.',
+						routing: { request: { method: 'POST', url: '/name-check' } },
+					},
+					{
 						name: 'Salutation',
 						value: 'salutation',
 						action: 'Get a salutation for a name',
@@ -90,7 +99,7 @@ export class NameGender implements INodeType {
 				default: '',
 				placeholder: 'Ayşe Yılmaz',
 				description: 'A first name or a full name. Titles and surnames are handled for you.',
-				displayOptions: { show: { operation: ['name', 'countries', 'salutation'] } },
+				displayOptions: { show: { operation: ['name', 'countries', 'salutation', 'nameCheck'] } },
 				routing: { send: { type: 'body', property: 'name' } },
 			},
 			{
@@ -138,6 +147,25 @@ export class NameGender implements INodeType {
 						placeholder: 'US',
 						description:
 							'Two-letter ISO code. Some names change gender across borders, so this changes the answer where it matters.',
+						routing: { send: { type: 'body', property: 'country' } },
+					},
+				],
+			},
+			{
+				displayName: 'Name Check Options',
+				name: 'nameCheckFields',
+				type: 'collection',
+				placeholder: 'Add Option',
+				default: {},
+				displayOptions: { show: { operation: ['nameCheck'] } },
+				options: [
+					{
+						displayName: 'Country Code',
+						name: 'country',
+						type: 'string',
+						default: '',
+						placeholder: 'DE',
+						description: 'Two-letter ISO code. Helps name parsing and the record lookup.',
 						routing: { send: { type: 'body', property: 'country' } },
 					},
 				],
