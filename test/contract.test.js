@@ -57,7 +57,7 @@ test('every body field is accepted by its endpoint', () => {
 			assert.ok(accepted.includes(field), `${option.value}: body field "${field}" is not in ${specPath}`);
 		}
 
-		for (const required of schema.required) {
+		for (const required of schema.required ?? []) {
 			assert.ok(bodyFieldsFor(option.value).includes(required), `${option.value}: required "${required}" is never sent`);
 		}
 	}

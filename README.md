@@ -24,8 +24,11 @@ If the names are personal data you do not want kept in your request history, tur
 | Gender From Email | `POST /api/v1/gender/email` | An email address |
 | Gender From Username | `POST /api/v1/gender/username` | A username or handle |
 | Countries For Name | `POST /api/v1/gender/countries` | A first name |
+| Salutation | `POST /api/v1/salutation` | A full name, titles included |
 
 The three gender operations accept an optional two-letter **Country Code**, which matters for names that change gender across borders, and **Best Guess**, which returns the most likely gender even below the confidence threshold.
+
+**Salutation** turns a name into a ready letter or email salutation in ten languages: `Dr. Anna Müller` in German gives `Sehr geehrte Frau Dr. Müller,`, `Ahmet Yılmaz` in Turkish `Sayın Ahmet Bey,`. The output has `salutation.formal`, `salutation.informal` and `salutation.neutral`. The gendered form is used only when the gender is known with at least the **Minimum Probability** (default 90) and the language has the name part it needs; otherwise `form` is `neutral` and `reason` says why. Set **Language**, a **Country Code** for the lookup, or **Known Gender** when your data already has it.
 
 Each incoming item costs one credit, including items that come back unknown.
 
