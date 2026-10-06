@@ -2,7 +2,7 @@
 	"node": "n8n-nodes-namegender",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
-	"categories": ["Data & Storage", "Marketing"],
+	"categories": ["Data & Storage", "Marketing & Content"],
 	"resources": {
 		"credentialDocumentation": [
 			{
