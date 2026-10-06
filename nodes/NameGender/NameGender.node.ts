@@ -122,6 +122,14 @@ export class NameGender implements INodeType {
 							'Turn a name into a ready letter or email salutation in ten languages, neutral when the gender is not certain',
 						routing: { request: { method: 'POST', url: '/salutation' } },
 					},
+					{
+						name: 'Get From Email',
+						value: 'salutationEmail',
+						action: 'Get a salutation from an email address',
+						description:
+							'Read the name from an email address and return a ready salutation. Addresses carry no accents; role addresses get the form for organisations.',
+						routing: { request: { method: 'POST', url: '/salutation' } },
+					},
 				],
 				default: 'salutation',
 			},
@@ -143,7 +151,7 @@ export class NameGender implements INodeType {
 				placeholder: 'name@email.com',
 				required: true,
 				default: '',
-				displayOptions: { show: { operation: ['email'] } },
+				displayOptions: { show: { operation: ['email', 'salutationEmail'] } },
 				routing: { send: { type: 'body', property: 'email' } },
 			},
 			{
@@ -210,7 +218,7 @@ export class NameGender implements INodeType {
 				type: 'collection',
 				placeholder: 'Add Option',
 				default: {},
-				displayOptions: { show: { operation: ['salutation'] } },
+				displayOptions: { show: { operation: ['salutation', 'salutationEmail'] } },
 				options: [
 					{
 						displayName: 'Academic Title',

@@ -28,6 +28,7 @@ The node has three resources: **Gender** (the four lookups below), **Salutation*
 | Countries For Name | `POST /api/v1/gender/countries` | A first name |
 | Name Check | `POST /api/v1/name-check` | A name as typed into a form |
 | Salutation | `POST /api/v1/salutation` | A full name, titles included |
+| Salutation From Email | `POST /api/v1/salutation` | An email address, when you have no name |
 
 The three gender operations accept an optional two-letter **Country Code**, which matters for names that change gender across borders, and **Best Guess**, which returns the most likely gender even below the confidence threshold.
 
