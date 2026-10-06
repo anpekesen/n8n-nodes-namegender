@@ -1,5 +1,5 @@
 {
-	"node": "n8n-nodes-namegender",
+	"node": "n8n-nodes-namegender.nameGender",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
 	"categories": ["Data & Storage", "Marketing & Content"],
