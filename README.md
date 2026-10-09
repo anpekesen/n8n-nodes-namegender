@@ -18,7 +18,7 @@ If the names are personal data you do not want kept in your request history, tur
 
 ## Operations
 
-The node has three resources: **Gender** (the four lookups below), **Salutation** and **Name Check**. Workflows built before 0.4.0 keep working: Gender is the default resource.
+The node has four resources: **Gender** (the four lookups below), **Salutation**, **Name Check** and **Age**. Workflows built before 0.4.0 keep working: Gender is the default resource.
 
 | Operation | Endpoint | Input |
 |---|---|---|
@@ -29,14 +29,17 @@ The node has three resources: **Gender** (the four lookups below), **Salutation*
 | Name Check | `POST /api/v1/name-check` | A name as typed into a form |
 | Salutation | `POST /api/v1/salutation` | A full name, titles included |
 | Salutation From Email | `POST /api/v1/salutation` | An email address, when you have no name |
+| Age | `POST /api/v1/age` | A first name or a full name |
 
-The three gender operations accept an optional **Country Code** (two or three letters), which matters for names that change gender across borders, and **Best Guess**, which returns the most likely gender even below the confidence threshold.
+The three gender operations accept an optional **Country Code** (two or three letters, or the country name), which matters for names that change gender across borders, and **Best Guess**, which returns the most likely gender even below the confidence threshold.
 
 When a form submission has no country, map what it does have: **Locale** (the browser language, such as `it-IT`) or **IP Address**. The API uses Country Code first, then the locale's region, then the IP, and the output's `country_source` says which one it used (`country`, `locale`, `ip` or `null`). The IP is not stored. All operations, Name Check and Salutation included, take the same three fields.
 
 **Salutation** turns a name into a ready letter or email salutation in ten languages: `Dr. Anna Müller` in German gives `Sehr geehrte Frau Dr. Müller,`, `Ahmet Yılmaz` in Turkish `Sayın Ahmet Bey,`. The output has `salutation.formal`, `salutation.informal` and `salutation.neutral`. The gendered form is used only when the gender is known with at least the **Minimum Probability** (default 90) and the language has the name part it needs; otherwise `form` is `neutral` and `reason` says why. Set **Language**, a **Country Code** for the lookup, or **Known Gender** when your data already has it.
 
 **Name Check** says whether a name typed into a form looks like a real person's name, with the reasons: `asdf qwerty` comes back `implausible` with `keyboard_pattern`, `Jennifer Null` comes back `plausible`. The output has `assessment` (`plausible`, `suspicious` or `implausible`), a `score` from 0 to 100 and the `signals` behind it. It never calls a name fake: use it to flag a record or route it for review, not to reject people automatically. Surnames are judged by their shape only.
+
+**Age** returns how old the living people with a first name are: `Brittany` gives a median `age` of 36, with `age_range` 32–38 for the middle half and `age_range_80` for the middle 80%. It describes a group, not the person. It covers the United States, France and Norway; without a country the US data is used, and any other country returns no age, `reason: country_not_covered`, and costs nothing. **Gender** narrows it to one gender's records, which matters for names such as Leslie.
 
 Each incoming item costs one credit, including items that come back unknown.
 

@@ -42,6 +42,7 @@ export class NameGender implements INodeType {
 				type: 'options',
 				noDataExpression: true,
 				options: [
+					{ name: 'Age', value: 'age' },
 					{ name: 'Gender', value: 'gender' },
 					{ name: 'Name Check', value: 'nameCheck' },
 					{ name: 'Salutation', value: 'salutation' },
@@ -88,6 +89,24 @@ export class NameGender implements INodeType {
 					},
 				],
 				default: 'name',
+			},
+			{
+				displayName: 'Operation',
+				name: 'operation',
+				type: 'options',
+				noDataExpression: true,
+				displayOptions: { show: { resource: ['age'] } },
+				options: [
+					{
+						name: 'Get',
+						value: 'age',
+						action: 'Get the age of a first name',
+						description:
+							'How old the living people with a first name are: the median age and the ranges for the middle half and the middle 80%. It describes a group, not the person.',
+						routing: { request: { method: 'POST', url: '/age' } },
+					},
+				],
+				default: 'age',
 			},
 			{
 				displayName: 'Operation',
@@ -141,7 +160,7 @@ export class NameGender implements INodeType {
 				default: '',
 				placeholder: 'Ayşe Yılmaz',
 				description: 'A first name or a full name. Titles and surnames are handled for you.',
-				displayOptions: { show: { operation: ['name', 'countries', 'salutation', 'nameCheck'] } },
+				displayOptions: { show: { operation: ['name', 'countries', 'salutation', 'nameCheck', 'age'] } },
 				routing: { send: { type: 'body', property: 'name' } },
 			},
 			{
@@ -207,6 +226,59 @@ export class NameGender implements INodeType {
 						type: 'string',
 						default: '',
 						placeholder: 'it-IT',
+						description:
+							'Language tag of the person, such as the browser\'s Accept-Language. Its region is used as the country when Country Code is empty; a tag without a region (en) sets none.',
+						routing: { send: { type: 'body', property: 'locale' } },
+					},
+				],
+			},
+			{
+				displayName: 'Age Options',
+				name: 'ageFields',
+				type: 'collection',
+				placeholder: 'Add Option',
+				default: {},
+				displayOptions: { show: { operation: ['age'] } },
+				options: [
+					{
+						displayName: 'Country Code',
+						name: 'country',
+						type: 'string',
+						default: '',
+						placeholder: 'FR',
+						description:
+							'US, FR or NO, as a code or a country name. Without a country the US data is used; any other country returns no age and costs no credit.',
+						routing: { send: { type: 'body', property: 'country' } },
+					},
+					{
+						displayName: 'Gender',
+						name: 'gender',
+						type: 'options',
+						default: 'male',
+						options: [
+							{ name: 'Female', value: 'female' },
+							{ name: 'Male', value: 'male' },
+						],
+						description:
+							'Use only one gender\'s records. Matters for names that moved between genders: men called Leslie are much older than women called Leslie.',
+						routing: { send: { type: 'body', property: 'gender' } },
+					},
+					{
+						displayName: 'IP Address',
+						name: 'ip',
+						type: 'string',
+						default: '',
+						placeholder: '203.0.113.7',
+						description:
+							'IP of the person, for example from a form submission. Used for the country only when neither Country Code nor a Locale with a region is set. Not stored.',
+						routing: { send: { type: 'body', property: 'ip' } },
+					},
+					{
+						displayName: 'Locale',
+						name: 'locale',
+						type: 'string',
+						default: '',
+						placeholder: 'fr-FR',
 						description:
 							'Language tag of the person, such as the browser\'s Accept-Language. Its region is used as the country when Country Code is empty; a tag without a region (en) sets none.',
 						routing: { send: { type: 'body', property: 'locale' } },
