@@ -188,8 +188,28 @@ export class NameGender implements INodeType {
 						default: '',
 						placeholder: 'US',
 						description:
-							'Two-letter ISO code. Some names change gender across borders, so this changes the answer where it matters.',
+							'Two- or three-letter ISO code (US or USA). Some names change gender across borders, so this changes the answer where it matters.',
 						routing: { send: { type: 'body', property: 'country' } },
+					},
+					{
+						displayName: 'IP Address',
+						name: 'ip',
+						type: 'string',
+						default: '',
+						placeholder: '203.0.113.7',
+						description:
+							'IP of the person, for example from a form submission. Used for the country only when neither Country Code nor a Locale with a region is set. Not stored.',
+						routing: { send: { type: 'body', property: 'ip' } },
+					},
+					{
+						displayName: 'Locale',
+						name: 'locale',
+						type: 'string',
+						default: '',
+						placeholder: 'it-IT',
+						description:
+							'Language tag of the person, such as the browser\'s Accept-Language. Its region is used as the country when Country Code is empty; a tag without a region (en) sets none.',
+						routing: { send: { type: 'body', property: 'locale' } },
 					},
 				],
 			},
@@ -207,8 +227,28 @@ export class NameGender implements INodeType {
 						type: 'string',
 						default: '',
 						placeholder: 'DE',
-						description: 'Two-letter ISO code. Helps name parsing and the record lookup.',
+						description: 'Two- or three-letter ISO code. Helps name parsing and the record lookup.',
 						routing: { send: { type: 'body', property: 'country' } },
+					},
+					{
+						displayName: 'IP Address',
+						name: 'ip',
+						type: 'string',
+						default: '',
+						placeholder: '203.0.113.7',
+						description:
+							'IP of the person, for example from a form submission. Used for the country only when neither Country Code nor a Locale with a region is set. Not stored.',
+						routing: { send: { type: 'body', property: 'ip' } },
+					},
+					{
+						displayName: 'Locale',
+						name: 'locale',
+						type: 'string',
+						default: '',
+						placeholder: 'it-IT',
+						description:
+							'Language tag of the person, such as the browser\'s Accept-Language. Its region is used as the country when Country Code is empty; a tag without a region (en) sets none.',
+						routing: { send: { type: 'body', property: 'locale' } },
 					},
 				],
 			},
@@ -236,8 +276,18 @@ export class NameGender implements INodeType {
 						default: '',
 						placeholder: 'IT',
 						description:
-							'Two-letter ISO code. Improves the gender lookup: Andrea is male in Italy and female in Germany.',
+							'Two- or three-letter ISO code. Improves the gender lookup: Andrea is male in Italy and female in Germany.',
 						routing: { send: { type: 'body', property: 'country' } },
+					},
+					{
+						displayName: 'IP Address',
+						name: 'ip',
+						type: 'string',
+						default: '',
+						placeholder: '203.0.113.7',
+						description:
+							'IP of the person, for example from a form submission. Used for the country only when neither Country Code nor a Locale with a region is set. Not stored.',
+						routing: { send: { type: 'body', property: 'ip' } },
 					},
 					{
 						displayName: 'Known Gender',
@@ -275,6 +325,16 @@ export class NameGender implements INodeType {
 							{ name: 'Turkish', value: 'tr' },
 						],
 						routing: { send: { type: 'body', property: 'language' } },
+					},
+					{
+						displayName: 'Locale',
+						name: 'locale',
+						type: 'string',
+						default: '',
+						placeholder: 'it-IT',
+						description:
+							'Language tag of the person, such as the browser\'s Accept-Language. Its region is used as the country when Country Code is empty; a tag without a region (en) sets none.',
+						routing: { send: { type: 'body', property: 'locale' } },
 					},
 					{
 						displayName: 'Minimum Probability',

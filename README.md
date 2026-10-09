@@ -30,7 +30,9 @@ The node has three resources: **Gender** (the four lookups below), **Salutation*
 | Salutation | `POST /api/v1/salutation` | A full name, titles included |
 | Salutation From Email | `POST /api/v1/salutation` | An email address, when you have no name |
 
-The three gender operations accept an optional two-letter **Country Code**, which matters for names that change gender across borders, and **Best Guess**, which returns the most likely gender even below the confidence threshold.
+The three gender operations accept an optional **Country Code** (two or three letters), which matters for names that change gender across borders, and **Best Guess**, which returns the most likely gender even below the confidence threshold.
+
+When a form submission has no country, map what it does have: **Locale** (the browser language, such as `it-IT`) or **IP Address**. The API uses Country Code first, then the locale's region, then the IP, and the output's `country_source` says which one it used (`country`, `locale`, `ip` or `null`). The IP is not stored. All operations, Name Check and Salutation included, take the same three fields.
 
 **Salutation** turns a name into a ready letter or email salutation in ten languages: `Dr. Anna Müller` in German gives `Sehr geehrte Frau Dr. Müller,`, `Ahmet Yılmaz` in Turkish `Sayın Ahmet Bey,`. The output has `salutation.formal`, `salutation.informal` and `salutation.neutral`. The gendered form is used only when the gender is known with at least the **Minimum Probability** (default 90) and the language has the name part it needs; otherwise `form` is `neutral` and `reason` says why. Set **Language**, a **Country Code** for the lookup, or **Known Gender** when your data already has it.
 
