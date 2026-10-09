@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-namegender",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "n8n node for NameGender: gender from a name, email or username with the evidence behind each answer, ready salutations in ten languages, a check of whether a name looks real, and the age range of a first name.",
   "license": "MIT",
   "homepage": "https://namegender.com/integrations",
